@@ -182,7 +182,7 @@ class Volume():
             case "ax+":
                 self.border[X_BORDER] = value
                 self.border[Y_BORDER] = value
-                self.border[Y_BORDER] = value
+                self.border[Z_BORDER] = value
         
 
 
