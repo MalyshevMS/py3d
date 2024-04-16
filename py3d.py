@@ -85,9 +85,27 @@ mode, displaying simple animation
 function, where user can choose mode
 """
 
-from constants import *
 from time import sleep as wait
 from subprocess import call as run
+
+try:
+    from constants import *
+except:
+    X: str = 'x'
+    Y: str = 'y'
+    Z: str = 'z'
+    ALL_AXIS: str = "ax+"
+    MULTIPLY: str = 'MULTIPLY'
+    ADD: str = 'ADD'
+    SET: str = 'SET'
+    X_BORDER: int = 0
+    Y_BORDER: int = 1
+    Z_BORDER: int = 2
+    XY: str = "xy"
+    XZ: str = "xz"
+    ZY: str = "zy"
+
+
 
 class Volume():
     """
