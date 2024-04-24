@@ -87,6 +87,7 @@ function, where user can choose mode
 
 from time import sleep as wait
 from subprocess import call as run
+from typing import Literal
 
 try:
     from constants import *
@@ -159,7 +160,7 @@ class Volume():
         trying to create box in space self with positional name and returns object, else raises Volume.BorderError
         """
         if size_x + x <= self.border[X_BORDER] and size_y + y <= self.border[Y_BORDER] and size_z + z <= self.border[Z_BORDER] and (x >= 0 and y >= 0 and z >= 0):
-            box = Box(self, x, y, z, size_x, size_y, size_z, name, True)
+            box = Box(self, x, y, z, size_x, size_y, size_z, name, False)
             self.obj.append(box)
             self.names.append(name)
             self.names.append(len(self.obj) - 1)
@@ -167,7 +168,7 @@ class Volume():
             return box
         else: raise self.BorderError(f"cannot create box '{name}': box out of border")
 
-    def border_edit(self, axis: str = ALL_AXIS, value: int = 0):
+    def border_edit(self, axis: Literal['x', 'y', 'z', 'ax+'] = ALL_AXIS, value: int = 0):
         """
         set self.border['axis'] to value,\n
         where axis can be 'x', 'y', 'z' or 'ax+' (or you can use constants)
@@ -190,7 +191,7 @@ class Box():
     """
     class for creating box in 3d space (Volume)
     """
-    def __init__(self, space: Volume, x: int = 0 , y: int = 0, z: int = 0, size_x: int = 1, size_y: int = 1, size_z: int = 1, name: str = "", doNaming: bool = False) -> None:
+    def __init__(self, space: Volume, x: int = 0 , y: int = 0, z: int = 0, size_x: int = 1, size_y: int = 1, size_z: int = 1, name: str = "", doNaming: Literal[True, False] = False) -> None:
         if (size_x + x <= space.border[X_BORDER] and size_y + y <= space.border[Y_BORDER] and size_z + z <= space.border[Z_BORDER]) and (x >= 0 and y >= 0 and z >= 0):
             self.x: int = x
             self.y: int = y
@@ -237,7 +238,7 @@ class Box():
                 "y": self.y, 
                 "z": self.z}
     
-    def move(self, axis: str, value: int, method: str = ADD) -> None:
+    def move(self, axis: Literal["x", "y", "z"], value: int, method: Literal["ADD", "SET", "MULTIPLY"] = ADD) -> None:
         """
         moves cube along provided axis using provided method,\n
         where axis can be 'x', 'y' or 'z';
@@ -296,7 +297,7 @@ class Box():
                             self.z = value
                         else: raise Volume.BorderError(f"cannot move box '{self.name}': move value out of the border")
 
-    def scale(self,  axis: str, value: int, method: str = MULTIPLY) -> None:
+    def scale(self,  axis: Literal["x", "y", "z"], value: int, method: Literal["ADD", "SET", "MULTIPLY"] = MULTIPLY) -> None:
         """
         scales cube along provided axis using provided method,\n
         where axis can be 'x', 'y' or 'z';
@@ -360,7 +361,7 @@ class Box():
                             else: raise Volume.BorderError(f"cannot scale box '{self.name}': scale value out of the border")
                 else: raise Volume.BorderError(f"cannot scale box '{self.name}': scale 'SET' value cannot be 0")
 
-    def display(self, plane: str = XY, box_fill: str = "#", empty_fill: str = ".", dist: str = " ", file = None) -> None:
+    def display(self, plane: Literal["xy", "xz", "zy"] = XY, box_fill: str = "#", empty_fill: str = ".", dist: str = " ", file = None) -> None:
         """
         display current cube on provided plane (can write to provided file),\n
         where plane can be 'xy', 'xz' or 'zy'
